@@ -546,6 +546,9 @@ class Bootstrap {
 	 * @return void
 	 */
 	public static function stop($mode = 1) {
+		//SIGTSTP 停止(stopped)进程的执行. 注意它和terminate以及interrupt的区别:该进程还未结束, 只是暂停执行. 本信号不能被阻塞, 处理或忽略.
+		//SIGINT 程序终止(interrupt)信号, 在用户键入INTR字符(通常是Ctrl-C)时发出，用于通知前台进程组终止进程。
+		//SIGTERM 程序结束(terminate)信号, 与SIGKILL不同的是该信号可以被阻塞和处理。通常用来要求程序自己正常退出，shell命令kill缺省产生这个信号。如果进程终止不了，我们才会尝试SIGKILL
 		$ok = Bootstrap::$pid && posix_kill(Bootstrap::$pid, $mode === 3 ? SIGINT : (($mode === 4) ? SIGTSTP : SIGTERM));
 
 		if (!$ok) {

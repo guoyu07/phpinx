@@ -336,6 +336,7 @@ class Daemon {
 		++$n;
 		Daemon::$obInStack = true;
 		if (Daemon::$config->obfilterauto->value && Daemon::$context instanceof \PHPDaemon\Request\Generic) {
+            //todo what object?
 			Daemon::$context->out($s, false);
 		}
 		else {
@@ -418,6 +419,7 @@ class Daemon {
 		ob_start(['\PHPDaemon\Core\Daemon', 'outputFilter']);
 		set_error_handler(['\PHPDaemon\Core\Daemon', 'errorHandler']);
 
+        //check runkit extension intalled ?
 		Daemon::checkSupports();
 
 		Daemon::$initservervar = $_SERVER;
@@ -624,6 +626,7 @@ class Daemon {
 					if ($code !== Daemon::WSTATE_SHUTDOWN) {
 						++$stat['alive'];
 						if (Daemon::$process instanceof Thread\Master) {
+							//todo why it reloadWorker?
 							Daemon::$process->reloadWorker($offset + $i + 1);
 							++$stat['reloading'];
 							continue;
