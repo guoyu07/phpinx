@@ -141,6 +141,7 @@ class Bootstrap {
 			$error = true;
 		}
 
+        //todo finish read config file
 		if (!Daemon::loadConfig(Daemon::$config->configfile->value)) {
 			$error = true;
 		}

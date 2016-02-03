@@ -236,6 +236,7 @@ class Daemon {
 	public static function initSettings() {
 		Daemon::$version = file_get_contents('VERSION', true);
 
+        //build config oject
 		Daemon::$config = new Config\Object;
 
 		if (preg_match('~BSD~i', php_uname('s')) && !defined("SO_REUSEPORT")) {

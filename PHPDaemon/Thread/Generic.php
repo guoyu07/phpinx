@@ -347,6 +347,12 @@ abstract class Generic {
 	 */
 	protected function waitPid() {
 		start:
+		/***
+		 *< -1 	等待任意进程组ID等于参数pid给定值的绝对值的进程。
+		-1 	等待任意子进程;与pcntl_wait函数行为一致。
+		0 	等待任意与调用进程组ID相同的子进程。
+		> 0 	等待进程号等于参数pid值的子进程。
+		 */
 		$pid = \pcntl_waitpid(-1, $status, WNOHANG);
 		if ($pid > 0) {
 			foreach ($this->collections as $col) {

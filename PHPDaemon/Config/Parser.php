@@ -178,13 +178,16 @@ class Parser {
 					array_pop($this->state);
 				}
 			},
+            //parse  Double-quoted token
 			static::T_STRING_DOUBLE  => function ($q) {
 				$str = '';
 				++$this->p;
 
 				for (; $this->p < $this->length; ++$this->p) {
+
 					$c = $this->getCurrentChar();
 
+                    //if right quote, no thing in quotes, just empty string
 					if ($c === $q) {
 						++$this->p;
 						break;
@@ -193,9 +196,11 @@ class Parser {
 						next:
 						$n = $this->getNextChar();
 						if ($n === $q) {
+                            //if letter
 							$str .= $q;
 							++$this->p;
 						}
+                        //if Decimal number
 						elseif (ctype_digit($n)) {
 							$def = $n;
 							++$this->p;
@@ -208,6 +213,7 @@ class Parser {
 							}
 							$str .= chr((int) $def);
 						}
+                        //if hex number
 						elseif (($n === 'x') || ($n === 'X')) {
 							$def = $n;
 							++$this->p;
@@ -234,6 +240,7 @@ class Parser {
 				}
 				return $str;
 			},
+             // Single-quoted string
 			static::T_STRING => function ($q) {
 				$str = '';
 				++$this->p;
