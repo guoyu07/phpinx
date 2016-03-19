@@ -253,6 +253,7 @@ class Parser {
 						break;
 					}
 					elseif ($c === '\\') {
+                        //special for \
 						if ($this->getNextChar() === $q) {
 							$str .= $q;
 							++$this->p;
@@ -279,6 +280,7 @@ class Parser {
 				}
 				elseif ($c === '}') {
 					if (sizeof($this->state) > 1) {
+                        // just like it name purge scope
 						$this->purgeScope($this->getCurrentScope());
 						array_pop($this->state);
 					}
@@ -301,24 +303,29 @@ class Parser {
 							if ($c === "\n") {
 								$newLineDetected = $prePoint;
 							}
+                            //todo ???
 							if ($elTypes[$i] !== null) {
 								++$i;
 								$elTypes[$i] = null;
 							}
 						}
+                        //fetch out single-quote
 						elseif ($c === '\'') {
 							if ($elTypes[$i] != null) {
 								$this->raiseError('Unexpected T_STRING.');
 							}
 
 							$string = $this->token(static::T_STRING, $c);
+                            //todo ????
 							--$this->p;
 
+                            //why not use key-value map
 							if ($elTypes[$i] === null) {
 								$elements[$i] = $string;
 								$elTypes[$i]  = static::T_STRING;
 							}
 						}
+                        //fetch out double-quote
 						elseif ($c === '"') {
 							if ($elTypes[$i] != null) {
 								$this->raiseError('Unexpected T_STRING_DOUBLE.');
@@ -339,6 +346,7 @@ class Parser {
 							if ($newLineDetected) {
 								$this->raiseError('Unexpected new-line instead of \';\'', 'notice', $newLineDetected[0], $newLineDetected[1]);
 							}
+                            /* State: variable definition block */
 							$tokenType = static::T_VAR;
 							break;
 						}
@@ -356,6 +364,7 @@ class Parser {
 								}
 
 								$elements[$i] .= $c;
+                                /* Value defined by constant (keyword) or number*/
 								$elTypes[$i] = static::T_CVALUE;
 							}
 						}
