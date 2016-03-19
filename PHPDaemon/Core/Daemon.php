@@ -565,6 +565,8 @@ class Daemon {
 					return false;
 				}
 			}
+            
+
 		}
 		Daemon::log('Config file not found in \'' . $paths . '\'.');
 		return false;
